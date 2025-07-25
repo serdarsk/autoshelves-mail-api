@@ -24,18 +24,19 @@ export default async function handler(req, res) {
   });
 
   const mailOptions = {
-    from: `"AutoShelves" <${process.env.MAIL_USER}>`,
-    to: to || "info@evomatq.com",
-    subject: "New Rack Configuration Request",
-    html: `
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Quantity:</strong> ${quantity}</p>
-      <p><strong>Message:</strong> ${message || "-"}</p>
-      <p><strong>Screenshot:</strong></p>
-      <img src="${image}" width="600"/>
-    `
-  };
+  from: `"AutoShelves" <${process.env.MAIL_USER}>`,
+  to: to || "info@evomatq.com",
+  subject: "New Rack Configuration Request",
+  html: `
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Quantity:</strong> ${quantity}</p>
+    <p><strong>Message:</strong> ${message || "-"}</p>
+    <p><strong>Configuration Screenshot:</strong></p>
+    <img src="${image}" width="600" style="border:1px solid #ccc; border-radius:6px; max-width:100%;"/>
+  `
+};
+
 
   try {
     await transporter.sendMail(mailOptions);
