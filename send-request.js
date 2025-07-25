@@ -1,13 +1,12 @@
 const nodemailer = require("nodemailer");
 
 export default async function handler(req, res) {
-  // CORS ayarları
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
-    return res.status(200).end(); // preflight isteği
+    return res.status(200).end(); // Preflight CORS isteği
   }
 
   if (req.method !== "POST") {
@@ -42,7 +41,7 @@ export default async function handler(req, res) {
     await transporter.sendMail(mailOptions);
     res.status(200).json({ success: true });
   } catch (err) {
-    console.error("Mail Error:", err);
+    console.error(err);
     res.status(500).json({ error: "Email not sent" });
   }
 }
