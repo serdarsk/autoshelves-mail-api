@@ -1,4 +1,4 @@
-const nodemailer = require("nodemailer");
+import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
-    return res.status(200).end(); // Preflight CORS isteği
+    return res.status(200).end(); // Preflight
   }
 
   if (req.method !== "POST") {
@@ -40,8 +40,8 @@ export default async function handler(req, res) {
   try {
     await transporter.sendMail(mailOptions);
     res.status(200).json({ success: true });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Email not sent" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Email sending failed." });
   }
 }
