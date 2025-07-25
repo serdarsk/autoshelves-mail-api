@@ -1,18 +1,15 @@
-export default async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // herkese izin ver
-  res.setHeader("Access-Control-Allow-Methods", "POST");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-
-  if (req.method === "OPTIONS") {
-    return res.status(200).end(); // preflight'a cevap ver
-  }
-
-  // ...geri kalan kod burada başlasın (req.body vs)
-
-
 const nodemailer = require("nodemailer");
 
 export default async function handler(req, res) {
+  // CORS ayarları
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end(); // preflight isteği
+  }
+
   if (req.method !== "POST") {
     return res.status(405).send("Method not allowed");
   }
@@ -20,7 +17,7 @@ export default async function handler(req, res) {
   const { name, email, quantity, message, image, to } = req.body;
 
   const transporter = nodemailer.createTransport({
-    service: "gmail", // Outlook veya farklı servis ise değiştir
+    service: "gmail",
     auth: {
       user: process.env.MAIL_USER,
       pass: process.env.MAIL_PASS
@@ -45,7 +42,7 @@ export default async function handler(req, res) {
     await transporter.sendMail(mailOptions);
     res.status(200).json({ success: true });
   } catch (err) {
-    console.error(err);
+    console.error("Mail Error:", err);
     res.status(500).json({ error: "Email not sent" });
   }
 }
