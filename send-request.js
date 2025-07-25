@@ -1,3 +1,15 @@
+export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*"); // herkese izin ver
+  res.setHeader("Access-Control-Allow-Methods", "POST");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end(); // preflight'a cevap ver
+  }
+
+  // ...geri kalan kod burada başlasın (req.body vs)
+
+
 const nodemailer = require("nodemailer");
 
 export default async function handler(req, res) {
